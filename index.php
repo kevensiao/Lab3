@@ -104,13 +104,15 @@
     function printSeats($_hands){
         global $winning;
         global $cards;
+        $cpt = 0;
         foreach($_hands as $hand){
+            echo '<span class="name">'. $hand['player']['name'] .'</span>'; 
             echo '
             <div class="seat">
                 <div class="player">
                     <img src="players/'.$hand['player']['name'].'.jpg" style="border-color:'.$hand['player']['color'].'">
                 </div>
-                <div class="hand">';
+                <div class="clear">';
                     foreach($hand['cards'] as $cardID){
                         foreach($cards as $card){
                             if($card['id']==$cardID){
@@ -123,18 +125,23 @@
                     }
                 echo '
                 </div>
-                <div class="score">'.$hand['score'].'
+                <div class="score">
+                    '.$hand['score'].'
                 </div>
                 <div class="winner">';
                 if($hand['score']==$winning){
-                    echo 'Winner!';
+                    echo '<span class="red">'. $hand['player']['name'] .' wins!</span>';
+                    $winner = $hand['player']['name'];
                 }
                 else{
-                    echo 'Loser...';
+                    echo $hand['player']['name'] .' loser...';
+                    $cpt += $hand['score'];
                 }
                 echo '</div>
             </div>';
         }
+        
+        echo '<span class="name">'. $winner .' has won and earned '. $cpt .' points !'. '</span>';
         echo '</div>';
     }
     
@@ -146,7 +153,8 @@
             <link rel="stylesheet" href="style.css">
         </head>
         <body>
-            <div class="super">';
+            <h1>World election !</h1>
+            <div class="game">';
             $cards = makeDeck();
             $players = getPlayers(4);
             $hands = getHands($cards, $players);
